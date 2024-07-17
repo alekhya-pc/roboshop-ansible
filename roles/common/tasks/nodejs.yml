@@ -7,7 +7,7 @@
 - name: Install nodejs
   ansible.builtin.dnf:
    name: nodejs
-  state: status
+   state: status
 
 - name: Setup App Prerequisites
   ansible.builtin.include_role:
