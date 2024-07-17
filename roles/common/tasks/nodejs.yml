@@ -1,13 +1,13 @@
 - name: Disable nodejs Default Version
-  ansible.builtin.shell: dnf module disable nodejs
+  ansible.builtin.shell: dnf module disable nodejs -y
 
 - name: Enable nodejs 20 Module
-  ansible.builtin.shell: dnf module enable nodejs:20
+  ansible.builtin.shell: dnf module enable nodejs:20 -y
 
 - name: Install nodejs
   ansible.builtin.dnf:
    name: nodejs
-   state: status
+   state: latest
 
 - name: Setup App Prerequisites
   ansible.builtin.include_role:
