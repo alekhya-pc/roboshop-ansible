@@ -27,8 +27,3 @@
      - name: Load Master Data
        ansible.builtin.shell: mysql -h mysql.{{ env }}.alekhyab96.online -uroot -pRoboShop@1 < /app/db/{{ item }}.sql
        loop: "{{schema_files}}"
-#  for file in schema master-data app-user ; do
-#  PRINT Load file - $file.sql
-#  mysql -h mysql.dev.alekhyab96.online -uroot -pRoboShop@1 < /app/db/$file.sql &>>$LOG_FILE
-#  STAT $?
-#  done
