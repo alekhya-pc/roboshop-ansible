@@ -1,13 +1,34 @@
-- name: Copy MongoDB repo file
-  ansible.builtin.template:
-   src: mongo.repo
-   dest: /etc/yum.repos.d/mongo.repo
+- name: Load mongodb schema
+  when: schema_setup == "mongo"
+  block:
+    - name: Copy MongoDB repo file
+      ansible.builtin.template:
+      src: mongo.repo
+      dest: /etc/yum.repos.d/mongo.repo
 
 
-- name: Install Mongodb Client
-  ansible.builtin.dnf:
-   name: mongodb-mongosh
-   state: latest
+    - name: Install Mongodb Client
+      ansible.builtin.dnf:
+        name: mongodb-mongosh
+        state: latest
 
-- name: Load Master Data
-  ansible.builtin.shell: mongosh --host mongo.{{ env }}.alekhyab96.online  </app/db/master-data.js
+    - name: Load Master Data
+      ansible.builtin.shell: mongosh --host mongo.{{ env }}.alekhyab96.online  </app/db/{{ item }}.js
+      loop: "{{schema_files}}"
+
+- name: Load mysql schema
+  when: schema_setup == "mysql"
+  block:
+     - name: Install mysql Client
+       ansible.builtin.dnf:
+        name: mysql
+        state: latest
+
+     - name: Load Master Data
+       ansible.builtin.shell: mysql -h mysql.{{ env }}.alekhyab96.online -uroot -pRoboShop@1 < /app/db/{{ item }}.sql
+       loop: "{{schema_files}}"
+#  for file in schema master-data app-user ; do
+#  PRINT Load file - $file.sql
+#  mysql -h mysql.dev.alekhyab96.online -uroot -pRoboShop@1 < /app/db/$file.sql &>>$LOG_FILE
+#  STAT $?
+#  done
