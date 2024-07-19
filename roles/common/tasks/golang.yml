@@ -9,8 +9,8 @@
     name: common
     tasks_from: app-prereq
 
-- name: download nodejs Dependencies
-  ansible.builtin.shell: go mod ; go get ; go build
+- name: download golang Dependencies
+  ansible.builtin.shell: go mod init dispatch ; go get ; go build
   args:
     chdir: "{{ app_path }}"
 
